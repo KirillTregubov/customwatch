@@ -21,8 +21,7 @@ jobs:
 
       - name: Test
         run: |
-          RELEASE_BODY_DECODED=$(printf "${RELEASE_BODY}" | base64 --decode)
-          echo "${RELEASE_BODY_DECODED}"
+          echo "$(printf "${RELEASE_BODY}" | base64 --decode)"
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
