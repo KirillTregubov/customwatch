@@ -15,6 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Read changelog
+        run: |
+          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $GITHUB_ENV
+
+      - name: Test
+        run: |
+          echo printf '%s\n' "$RELEASE_BODY"
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
@@ -36,14 +44,6 @@ jobs:
 
       - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile --strict-peer-dependencies
-
-      - name: Read changelog
-        run: |
-          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $GITHUB_ENV
-
-      - name: Test
-        run: |
-          echo printf '%s\n' "$RELEASE_BODY"
 
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
