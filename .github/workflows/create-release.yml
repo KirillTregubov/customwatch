@@ -21,7 +21,7 @@ jobs:
 
       - name: Test
         run: |
-          echo printf '%s\n' "$RELEASE_BODY"
+          printf '%s\n' "$RELEASE_BODY"
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
