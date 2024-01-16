@@ -17,11 +17,11 @@ jobs:
 
       - name: Read changelog
         run: |
-          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $env:GITHUB_ENV
+          echo "RELEASE_BODY="$(cat CHANGELOG.txt)"" >> $env:GITHUB_ENV
 
       - name: Test
         run: |
-          echo ${{ env.RELEASE_BODY }}
+          echo ${{ env.RELEASE_BODY  }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
@@ -51,7 +51,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-          ENV_BODY: ${{ env.RELEASE_BODY }}
         with:
           tauriScript: pnpm tauri
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
