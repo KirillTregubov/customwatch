@@ -14,37 +14,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: install Rust stable
+      - name: Install Rust stable
         uses: dtolnay/rust-toolchain@stable
 
-      - name: Rust cache
+      - name: Setup Rust cache
         uses: swatinem/rust-cache@v2
         with:
           workspaces: './src-tauri -> target'
 
-      - uses: pnpm/action-setup@v2
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: setup node
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
 
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: pnpm install --frozen-lockfile --strict-peer-dependencies
-
-      - uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: |
-            - recursive: true
-              args: [--frozen-lockfile, --strict-peer-dependencies]
 
       - name: Read releaseBody from file
         run: |
-          export RELEASE_BODY=$(cat path/to/your/file.txt)
+          export RELEASE_BODY=$(cat CHANGELOG.txt)
           echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
 
       - uses: tauri-apps/tauri-action@v0
