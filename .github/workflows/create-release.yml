@@ -21,7 +21,7 @@ jobs:
 
       - name: Test
         run: |
-          echo $env:RELEASE_BODY
+          echo ${{ env.RELEASE_BODY }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
