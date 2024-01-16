@@ -17,7 +17,7 @@ jobs:
 
       - name: Read changelog
         run: |
-          echo "RELEASE_BODY=TEST STRING" >> $env:GITHUB_ENV
+          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $env:GITHUB_ENV
 
       - name: Test
         run: |
