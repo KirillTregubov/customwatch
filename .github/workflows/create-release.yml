@@ -17,11 +17,11 @@ jobs:
 
       - name: Read changelog
         run: |
-          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $GITHUB_ENV
+          echo "RELEASE_BODY=TEST STRING" >> $GITHUB_ENV
 
       - name: Test
         run: |
-          printf '%s\n' "$RELEASE_BODY"
+          echo ${{ env.RELEASE_BODY }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
