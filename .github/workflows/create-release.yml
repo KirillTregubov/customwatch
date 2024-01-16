@@ -41,16 +41,21 @@ jobs:
         run: |
           echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $GITHUB_ENV
 
+      - name: Test
+        run: |
+          echo printf '%s\n' "$RELEASE_BODY"
+
       - name: Build Tauri app
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          ENV_BODY: ${{ env.RELEASE_BODY }}
         with:
           tauriScript: pnpm tauri
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
           releaseName: 'OverBuddy v__VERSION__'
-          releaseBody: $RELEASE_BODY
+          releaseBody: ${{ env.RELEASE_BODY }}
           releaseDraft: true
           prerelease: false
