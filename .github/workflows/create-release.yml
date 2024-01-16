@@ -17,11 +17,11 @@ jobs:
 
       - name: Read changelog
         run: |
-          echo "RELEASE_BODY=$(cat CHANGELOG.txt | base64)" >> $env:GITHUB_ENV
+          echo "RELEASE_BODY=$(cat CHANGELOG.txt)" >> $env:GITHUB_ENV
 
       - name: Test
         run: |
-          echo "$(printf "${RELEASE_BODY}" | base64 --decode)"
+          echo ${{ env.RELEASE_BODY }}
 
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable

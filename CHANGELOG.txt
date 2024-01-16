@@ -1,4 +1,1 @@
-This is the changelog for the latest version.
-
-- Added some awesome feature
-- Fixed an annoying bug
+This is the changelog for the latest version.\n\n- Added some awesome feature\n- Fixed an annoying bug
