@@ -1,0 +1,4 @@
+This is the changelog for the latest version.
+
+- Added some awesome feature
+- Fixed an annoying bug

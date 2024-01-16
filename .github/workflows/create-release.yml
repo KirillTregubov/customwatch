@@ -42,16 +42,21 @@ jobs:
             - recursive: true
               args: [--frozen-lockfile, --strict-peer-dependencies]
 
+      - name: Read releaseBody from file
+        run: |
+          export RELEASE_BODY=$(cat path/to/your/file.txt)
+          echo "RELEASE_BODY=$RELEASE_BODY" >> $GITHUB_ENV
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          # RELEASE_BODY: ${{ env.RELEASE_BODY }}
         with:
           tauriScript: pnpm tauri
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          includeUpdaterJson: false
           releaseName: 'OverBuddy v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
+          releaseBody: ${{ env.RELEASE_BODY }}
           releaseDraft: true
           prerelease: false
