@@ -1899,7 +1899,6 @@ name = "overbuddy"
 version = "0.0.0"
 dependencies = [
  "dunce",
- "protobuf",
  "serde",
  "serde_json",
  "sysinfo",
@@ -2219,12 +2218,6 @@ checksum = "95fc56cda0b5c3325f5fbbd7ff9fda9e02bb00bb3dac51252d2f1bfa1cb8cc8c"
 dependencies = [
  "unicode-ident",
 ]
-
-[[package]]
-name = "protobuf"
-version = "2.28.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "106dd99e98437432fed6519dedecfade6a06a73bb7b2a1e019fdd2bee5778d94"
 
 [[package]]
 name = "quick-xml"
