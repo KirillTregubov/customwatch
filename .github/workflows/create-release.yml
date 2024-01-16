@@ -49,8 +49,8 @@ jobs:
           TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
         with:
           tauriScript: pnpm tauri
-          args: --ci
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          includeUpdaterJson: false
           releaseName: 'OverBuddy v__VERSION__'
           releaseBody: 'See the assets to download this version and install.'
           releaseDraft: true
