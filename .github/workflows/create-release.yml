@@ -25,7 +25,6 @@ jobs:
           $changelog = Get-Content CHANGELOG.txt -Raw
           echo "$changelog" >> $env:GITHUB_ENV
           echo 'EOF' >> $env:GITHUB_ENV
-
           # Read changelog + release notes
           echo "RELEASE_BODY<<EOF" >> $env:GITHUB_ENV
           echo "$changelog" >> $env:GITHUB_ENV
@@ -33,6 +32,8 @@ jobs:
           $version = (Get-Content package.json | ConvertFrom-Json).version
           (Get-Content RELEASE.md -Raw) -replace '__VERSION__', "$version" >> $env:GITHUB_ENV
           echo 'EOF' >> $env:GITHUB_ENV
+          # Print success message
+          echo "Successfully read changelog"
         shell: pwsh
 
       - name: Install Rust
@@ -67,28 +68,21 @@ jobs:
           tagName: ${{ github.event_name == 'pull_request' && 'v__VERSION__-pre' || 'v__VERSION__' }}
           releaseName: ${{ github.event_name == 'pull_request' && 'OverBuddy v__VERSION__ (Preview)' || 'OverBuddy v__VERSION__' }}
           releaseBody: ${{ env.CHANGELOG_BODY }}
-          releaseDraft: false
+          releaseDraft: true
           prerelease: ${{ github.event_name == 'pull_request' }}
 
       - name: Update Release Body
+        id: update_release
+        uses: octokit/request-action@v2.x
+        with:
+          route: PATCH /repos/{repo}/releases/{release_id}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_BODY: ${{ env.RELEASE_BODY }}
-          RELEASE_ID: ${{ steps.tauri.outputs.releaseId }}
-          REPO: ${{ github.repository }}
-        run: |
-          $headers = @{
-            Authorization = "Bearer $env:GITHUB_TOKEN"
-            Accept        = "application/vnd.github+json"
-            "X-GitHub-Api-Version" = "2022-11-28"
-          }
-
-          $body = @{
-            body = "$env:RELEASE_BODY"
-          } | ConvertTo-Json -Compress
-
-          Invoke-RestMethod -Uri "https://api.github.com/repos/$env:REPO/releases/$env:RELEASE_ID" `
-                            -Method Patch `
-                            -Headers $headers `
-                            -Body $body
-        shell: pwsh
+          INPUT_REPO: ${{ github.repository }}
+          INPUT_RELEASE_ID: ${{ steps.tauri.outputs.releaseId }}
+          INPUT_BODY: ${{ toJSON(env.RELEASE_BODY) }}
+      - name: Handle Update Release Success
+        run: echo "Successfully updated release body"
+      - name: Handle Update Release Failure
+        run: 'echo "Release could not be found. Request failed with status ${{ steps.update_release.outputs.status }}: ${{ steps.update_release.outputs.data }}"'
+        if: ${{ failure() }}

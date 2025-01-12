@@ -1,6 +1,6 @@
 [package]
 name = "overbuddy"
-version = "2.0.0"
+version = "2.0.1"
 description = "Elevate your Overwatch™ 2 experience by customizing your in-game menu background with ease."
 authors = ["Kirill Tregubov"]
 license = "../LICENSE"
@@ -32,4 +32,5 @@ sysinfo = "0.33"
 similar = "2.6.0"
 
 [target."cfg(not(any(target_os = \"android\", target_os = \"ios\")))".dependencies]
+tauri-plugin-single-instance = "2"
 tauri-plugin-updater = "2"

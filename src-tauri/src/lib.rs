@@ -11,6 +11,7 @@ use std::fs;
 use std::path::{Path, PathBuf};
 use std::process::Command;
 use tauri::AppHandle;
+use tauri::Manager;
 
 #[tauri::command]
 fn get_launch_config(handle: AppHandle) -> Result<String, Error> {
@@ -671,6 +672,11 @@ fn reset(handle: AppHandle) -> Result<String, Error> {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, _, _| {
+            let window = app.get_webview_window("main").expect("no main window");
+            window.unminimize().ok();
+            window.set_focus().ok();
+        }))
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
